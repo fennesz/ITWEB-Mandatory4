@@ -1,0 +1,67 @@
+<p-dataTable [contextMenu]="cm" [value]="model?.ExerciseList" selectionMode="single" [(selection)]="selectedExercise" [paginator]="true" rows="15" [responsive]="true">
+    <p-header>{{model?.Name}}</p-header>
+    <p-column field="ExerciseName" header="Exercise Name" [sortable]="true"></p-column>
+    <p-column field="Description" header="Description" [sortable]="true"></p-column>
+    <p-column field="RepsOrTime" header="Reps/Time" [sortable]="true"></p-column>
+    <p-column field="Sets" header="Sets" [sortable]="true"></p-column>
+    <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-footer>
+</p-dataTable>
+
+<p-dataTable [value]="exerciseLog | async" field="myTemp" [paginator]="true" rows="15" [responsive]="true">
+    <p-column header="Exercise Log" field="TimeStamp" [sortable]="true"></p-column>
+    <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="addExerciseLog()" label="Add log"></button></div></p-footer>
+</p-dataTable>
+
+<p-dialog header="Add Exercise" [(visible)]="displayDialogAdd" [responsive]="true" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="exerciseToAddOrEdit">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="name">Exercise Name</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="exerciseToAddOrEdit.ExerciseName" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="description">Description</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="exerciseToAddOrEdit.Description" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="repsortime">Reps/Time</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="repsortime" [(ngModel)]="exerciseToAddOrEdit.RepsOrTime" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="set">Set</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="set" [(ngModel)]="exerciseToAddOrEdit.Sets" /></div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa-check" (click)="saveAdd()" label="Save"></button>
+        </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Edit Exercise" [(visible)]="displayDialogEdit" [responsive]="true" showEffect="fade" [modal]="true">
+    <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="exerciseToAddOrEdit">
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="name">Exercise Name</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="exerciseToAddOrEdit.ExerciseName" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="description">Description</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="description" [(ngModel)]="exerciseToAddOrEdit.Description" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="repsortime">Reps/Time</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="repsortime" [(ngModel)]="exerciseToAddOrEdit.RepsOrTime" /></div>
+        </div>
+        <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="set">Set</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="set" [(ngModel)]="exerciseToAddOrEdit.Sets" /></div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa-check" (click)="saveEdit()" label="Save"></button>
+        </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-contextMenu #cm [model]="items"></p-contextMenu>
