@@ -1,0 +1,17 @@
+<h1>Login</h1>
+<h4>Gruppe 40 - workoutprogram</h4>
+
+<div class="ui-inputgroup">
+  <div class='usernameDiv'>
+  <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+  <input [(ngModel)]="user.Username" type="text" pInputText placeholder="Username">
+</div>
+<div class='passwordDiv'>
+  <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+  <input [(ngModel)]="user.Password" type="password" pPassword placeholder="Password">
+</div>
+<div class='buttonGroup'>
+    <button pButton type="button" (click)="onclickRegister()" label="Register"></button>
+    <button pButton type="button" (click)="onclickLogin()" label="Login"></button>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+.ui-inputgroup {
+    display: flex;
+    flex-direction: column
+}
+
+.passwordDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.usernameDiv {
+    display: flex;
+    flex-direction: row;
+}
+
+.buttonGroup {
+    display:flex;
+    justify-content: space-between;
+    margin-top: 5em;
+}
+
+button {
+    min-width: 35%;
+}
