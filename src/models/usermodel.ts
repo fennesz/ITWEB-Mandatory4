@@ -5,5 +5,6 @@ export interface UserModel{
     Username: string;
     Password: string;
     Email: string;
-    WorkoutProgramList: WorkoutProgramModel[];
+    Hash: string;
+    Salt: string;
 }
