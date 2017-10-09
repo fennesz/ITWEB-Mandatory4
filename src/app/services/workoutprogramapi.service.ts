@@ -1,21 +1,31 @@
+import { AuthenticationService } from './authentication.service';
 import { BaseService } from './base.service';
 import { ExerciseLog } from '../../models/exerciselog';
 import { ExerciseModel } from '../../models/exercisemodel';
 import { ExerciseModelDto } from '../../models/dtos/exercisemodeldto';
 import { WorkoutProgramModel } from '../../models/workoutprogrammodel';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/concatMap';
 import 'rxjs/add/operator/switchMap';
 import { Router } from '@angular/router';
 import { WorkoutProgramModelDto } from '../../models/dtos/workoutprogrammodeldto';
 
+// Class to hold authentication headers
+class AthenticationHeader {
+    headers: HttpHeaders;
+    constructor(authService: AuthenticationService) {
+        this.headers = new HttpHeaders().set('Authorization', 'Bearer' + 
+        authService.getToken())
+    )};
+    }
+}
 
 @Injectable()
 export class WorkoutProgramApiService extends BaseService {
 
-    constructor(http: HttpClient) {
+    constructor(http: HttpClient, authService: AuthenticationService) {
         super(http);
      }
 
