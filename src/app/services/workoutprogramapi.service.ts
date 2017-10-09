@@ -1,3 +1,4 @@
+import { BaseService } from './base.service';
 import { ExerciseLog } from '../../models/exerciselog';
 import { ExerciseModel } from '../../models/exercisemodel';
 import { ExerciseModelDto } from '../../models/dtos/exercisemodeldto';
@@ -12,10 +13,11 @@ import { WorkoutProgramModelDto } from '../../models/dtos/workoutprogrammodeldto
 
 
 @Injectable()
-export class WorkoutProgramApiService {
-    baseUrl: String = 'https://itweb-mandatory2.herokuapp.com';
+export class WorkoutProgramApiService extends BaseService {
 
-    constructor(private http: HttpClient) { }
+    constructor(http: HttpClient) {
+        super(http);
+     }
 
     public editExerciseInWorkoutProgram(id: string, exercise: ExerciseModel): Observable<ExerciseModel> {
         let dto = this.createExerciseDtoFromModel(exercise);
