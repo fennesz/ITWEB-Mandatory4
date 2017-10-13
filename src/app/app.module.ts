@@ -1,3 +1,5 @@
+import { GrowlModule } from 'primeng/primeng';
+import { AuthenticationService } from './services/authentication.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { WorkoutProgramApiService } from './services/workoutprogramapi.service';
 import { HttpClient, HttpClientModule, HttpHandler } from '@angular/common/http';
@@ -34,12 +36,14 @@ import { LoginComponent } from './login/login.component';
     ContextMenuModule,
     CommonModule,
     InputTextModule,
-    PasswordModule
+    PasswordModule,
+    GrowlModule
   ],
   providers: [
     HttpClient,
     WorkoutProgramApiService,
-    DatePipe
+    DatePipe,
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

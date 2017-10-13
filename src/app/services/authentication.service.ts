@@ -10,16 +10,16 @@ export class AuthenticationService extends BaseService {
     constructor(http: HttpClient) {
         super(http);
      }
-     private saveToken(token: string) {
+     public saveToken(token: string) {
          window.localStorage.setItem(this.workoutProgramTokenKey, token);
      }
 
-     private getToken(): string {
+     public getToken(): string {
          return window.localStorage.getItem(this.workoutProgramTokenKey);
      }
 
      public registerUser(user: UserModel): Observable<Boolean> {
-        const url = `${this.baseUrl}/api/register`;
+        const url = `${this.baseUrl}/api/auth/register`;
         return this.http.post<AuthResponse>(url, user).map(data => {
             this.saveToken(data.Token);
             return true;
@@ -54,5 +54,9 @@ export class AuthenticationService extends BaseService {
          } else {
              return;
          }
+     }
+
+     public logInUser(user: UserModel): Observable<boolean> {
+        return this.http.post<boolean>(this.baseUrl + '/api/auth', user);
      }
 }
