@@ -1,3 +1,4 @@
+import {Message} from 'primeng/components/common/api';
 import { WorkoutProgramApiService } from '../services/workoutprogramapi.service';
 import { HttpClient } from '@angular/common/http';
 import { WorkoutProgramModel } from '../../models/workoutprogrammodel';
@@ -21,6 +22,7 @@ export class WorkoutProgramListComponent implements OnInit {
   selectedWorkoutprogram: WorkoutProgramModel;
   programList: Observable<WorkoutProgramModel[]>;
   items: MenuItem[];
+  msgs: Message[];
 
   constructor(private apiService: WorkoutProgramApiService, private router: Router) { }
 
@@ -30,6 +32,8 @@ export class WorkoutProgramListComponent implements OnInit {
       {label: 'Delete', icon: 'fa-close', command: (event) => this.delete()},
       {label: 'Edit', icon: 'fa-close', command: (event) => this.editWorkoutProgram()},
     ];
+    this.msgs = [];
+    this.msgs.push({severity: 'success', summary: 'Success', detail: 'Login successful'});
   }
 
   public showDialogToAdd() {

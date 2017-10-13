@@ -23,7 +23,6 @@ class AuthenticationHeader {
 @Injectable()
 export class WorkoutProgramApiService extends BaseService {
     authHeader: AuthenticationHeader;
-    authIsActive = false;
 
     constructor(http: HttpClient, authService: AuthenticationService) {
         super(http);

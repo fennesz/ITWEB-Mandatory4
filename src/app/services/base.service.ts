@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 export abstract class BaseService {
     protected baseUrl: String = 'https://itweb-mandatory2.herokuapp.com';
     protected workoutProgramTokenKey = 'workoutProgramApp';
+    protected authIsActive = false;
 
     constructor(protected http: HttpClient) { }
 

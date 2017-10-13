@@ -57,6 +57,10 @@ export class AuthenticationService extends BaseService {
      }
 
      public logInUser(user: UserModel): Observable<boolean> {
-        return this.http.post<boolean>(this.baseUrl + '/api/auth', user);
+         if (this.authIsActive) {
+            return this.http.post<boolean>(this.baseUrl + '/api/auth', user);
+        } else {
+            return Observable.of(true);
+        }
      }
 }

@@ -1,3 +1,6 @@
+
+<p-growl [(value)]="msgs"></p-growl>
+
 <p-dataTable [value]="programList | async" [contextMenu]="cm" selectionMode="single" [(selection)]="selectedWorkoutprogram" (onRowSelect)="navigateToWorkoutprogram()" [paginator]="true" rows="15" [responsive]="true">
   <p-header>Workout Program List</p-header>
   <p-column field="Name" header="Name" [sortable]="true"></p-column>
