@@ -12,7 +12,8 @@
   <input [(ngModel)]="user.Password" type="password" pPassword placeholder="Password">
 </div>
 <div class='buttonGroup'>
-    <button pButton type="button" (click)="onclickRegister()" label="Register"></button>
+    <button pButton type="button" [routerLink]="['/register']" label="Register"></button>
+    <!-- <button pButton type="button" (click)="onclickRegister()" label="Register"></button> -->
     <button pButton type="button" (click)="onclickLogin()" label="Login"></button>
   </div>
 </div>

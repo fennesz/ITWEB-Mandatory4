@@ -14,6 +14,9 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkoutProgramListComponent } from './workoutprogramlist/workoutprogramlist.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+
+import { RegisterValidateService } from './services/register-validate.service'
 
 @NgModule({
   declarations: [
@@ -21,7 +24,8 @@ import { LoginComponent } from './login/login.component';
     NotfoundComponent,
     WorkoutprogramComponent,
     WorkoutProgramListComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
 ],
   imports: [
     BrowserModule,
@@ -43,7 +47,8 @@ import { LoginComponent } from './login/login.component';
     HttpClient,
     WorkoutProgramApiService,
     DatePipe,
-    AuthenticationService
+    AuthenticationService,
+    RegisterValidateService
   ],
   bootstrap: [AppComponent]
 })

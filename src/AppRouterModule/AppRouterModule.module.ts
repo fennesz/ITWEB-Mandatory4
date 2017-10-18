@@ -4,9 +4,11 @@ import { WorkoutprogramComponent } from '../app/workoutprogramlist/workoutprogra
 import { NotfoundComponent } from '../app/notfound/notfound.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RegisterComponent } from '../app/register/register.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
+  { path : 'register', component: RegisterComponent },
   { path: 'workoutprogram', component: WorkoutProgramListComponent },
   { path: 'workoutprogram/:id', component: WorkoutprogramComponent },
   { path: '',   redirectTo: '/login', pathMatch: 'full' },
