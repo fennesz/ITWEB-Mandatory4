@@ -7,20 +7,20 @@
         <form (submit)="onRegisterSubmit()">
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" [(ngModel)]="username" name="username" class="form-control">
+                <input type="text" [(ngModel)]="user.username" name="username" class="form-control">
             </div>
             <div class="form-group">
                 <br>
                 <label>Email</label>
-                <input type="text" [(ngModel)]="email" name="email" class="form-control">
+                <input type="text" [(ngModel)]="user.email" name="email" class="form-control">
             </div>
             <div class="form-group">
                 <br>
                 <label>Password</label>
-                <input type="password" [(ngModel)]="password" name="password" class="form-control">
+                <input type="password" [(ngModel)]="user.password" name="password" class="form-control">
             </div>
             <br>
-            <input type="submit" class="btn btn-primary" value="Register">
+            <input type="submit" class="btn btn-primary" value="Register" (onClick)="onRegisterClick()" >
         </form>
     </div>
     <div>
