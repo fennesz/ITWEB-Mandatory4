@@ -4,4 +4,5 @@
 </div>
 
 <button *ngIf="(!authService.isLoggedIn() && router.url != '/login')" pButton type="button" [routerLink]="['/login']" label="Login"></button>
+<button *ngIf="authService.isLoggedIn()" pButton type="button" (click)="authService.logout()" [routerLink]="['/']" label="Logout"></button>
 

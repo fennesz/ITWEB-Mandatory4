@@ -12,8 +12,11 @@ export class AuthenticationService extends BaseService {
         super(http);
     }
 
+    public logout(){
+        window.localStorage.removeItem(this.workoutProgramTokenKey);
+    }
+
     public setToken(token: string) {
-        console.log(token);
         window.localStorage.setItem(this.workoutProgramTokenKey, token);
     }
 
