@@ -28,7 +28,7 @@ export class WorkoutprogramComponent implements OnInit {
   public items: MenuItem[];
   public exerciseLog: Observable<ExerciseLog[]>;
 
-  constructor(private workoutProgramService: WorkoutProgramApiService, private route: ActivatedRoute, private authService: AuthenticationService) { }
+  constructor(private workoutProgramService: WorkoutProgramApiService, public route: ActivatedRoute, public authService: AuthenticationService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {

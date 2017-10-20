@@ -25,7 +25,7 @@ export class WorkoutProgramListComponent implements OnInit {
   items: MenuItem[];
   msgs: Message[];
 
-  constructor(private apiService: WorkoutProgramApiService, private router: Router, private authService: AuthenticationService) { }
+  constructor(private apiService: WorkoutProgramApiService, public router: Router, public authService: AuthenticationService) { }
 
   ngOnInit() {
     this.programList = this.apiService.getWorkoutProgramList();
