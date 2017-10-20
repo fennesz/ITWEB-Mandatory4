@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
 import { RegisterValidateService } from './services/register-validate.service'
+import { RegisterUserService } from './services/registerUser.service'
 
 @NgModule({
   declarations: [
@@ -48,8 +49,10 @@ import { RegisterValidateService } from './services/register-validate.service'
     WorkoutProgramApiService,
     DatePipe,
     AuthenticationService,
-    RegisterValidateService
+    RegisterValidateService,
+    RegisterUserService
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+ }

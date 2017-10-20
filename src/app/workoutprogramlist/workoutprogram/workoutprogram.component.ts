@@ -8,6 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import { ExerciseLog } from '../../../models/exerciselog';
+import { AuthenticationService } from '../../services/authentication.service';
+
 
 @Component({
   selector: 'app-workoutprogram',
@@ -26,7 +28,7 @@ export class WorkoutprogramComponent implements OnInit {
   public items: MenuItem[];
   public exerciseLog: Observable<ExerciseLog[]>;
 
-  constructor(private workoutProgramService: WorkoutProgramApiService, private route: ActivatedRoute) { }
+  constructor(private workoutProgramService: WorkoutProgramApiService, private route: ActivatedRoute, private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -40,7 +42,7 @@ export class WorkoutprogramComponent implements OnInit {
         });
         return exList;
       });
-   });
+    });
 
     this.items = [
       { label: 'Delete', icon: 'fa-close', command: (event) => this.delete() },
@@ -65,8 +67,8 @@ export class WorkoutprogramComponent implements OnInit {
     this.newExercise = false;
     this.workoutProgramService.postExerciseLog(this.id).subscribe((obj) => {
       this.exerciseLog = this.exerciseLog.map(result => {
-          result.push(obj);
-          return result;
+        result.push(obj);
+        return result;
       });
     });
   }

@@ -3,3 +3,5 @@
   <router-outlet></router-outlet>
 </div>
 
+<button *ngIf="(!authService.isLoggedIn() && router.url != '/login')" pButton type="button" [routerLink]="['/login']" label="Login"></button>
+

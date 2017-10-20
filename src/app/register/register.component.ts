@@ -28,14 +28,16 @@ export class RegisterComponent implements OnInit {
             // Notify user of invalid rest info
             return;
         }
-
+        
         // ALT ER GODT
-        this.registerUserService.RegisterUser(this.user);   // Register user
+        this.registerUserService.RegisterUser(this.user).subscribe((value) => {
+            console.log(value);
+            if(value){
+                this.router.navigate(['/']);                        // Send user back to base page                
+            }
+        });   // Register user
 
         // Did we succeed in creating an new user?
-
-
-        this.router.navigate(['/']);                        // Send user back to base page
     }
 }
 

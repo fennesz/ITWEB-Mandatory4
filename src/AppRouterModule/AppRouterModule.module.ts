@@ -5,14 +5,15 @@ import { NotfoundComponent } from '../app/notfound/notfound.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from '../app/register/register.component';
+import { AuthGuard } from '../app/guards/auth.guard';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path : 'register', component: RegisterComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'workoutprogram', component: WorkoutProgramListComponent },
   { path: 'workoutprogram/:id', component: WorkoutprogramComponent },
-  { path: '',   redirectTo: '/login', pathMatch: 'full' },
-  { path: '404', component: NotfoundComponent},
+  { path: '', redirectTo: '/workoutprogram', pathMatch: 'full' },
+  { path: '404', component: NotfoundComponent },
   { path: '**', redirectTo: '/404', pathMatch: 'full' }
 ];
 
@@ -26,4 +27,4 @@ const appRoutes: Routes = [
     RouterModule
   ]
 })
-export class AppRouterModule {}
+export class AppRouterModule { }

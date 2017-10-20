@@ -8,6 +8,7 @@ import { WorkoutprogramComponent } from './workoutprogram/workoutprogram.compone
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-workoutprogramlist',
@@ -24,7 +25,7 @@ export class WorkoutProgramListComponent implements OnInit {
   items: MenuItem[];
   msgs: Message[];
 
-  constructor(private apiService: WorkoutProgramApiService, private router: Router) { }
+  constructor(private apiService: WorkoutProgramApiService, private router: Router, private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.programList = this.apiService.getWorkoutProgramList();

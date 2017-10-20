@@ -16,75 +16,77 @@ import { WorkoutProgramModelDto } from '../../models/dtos/workoutprogrammodeldto
 class AuthenticationHeader {
     headers: HttpHeaders;
     constructor(authService: AuthenticationService) {
-        this.headers = new HttpHeaders().set('Authorization', 'Bearer' + authService.getToken());
+        this.headers = new HttpHeaders().set('Authorization', 'Bearer ' + authService.getToken());
     }
 }
 
 @Injectable()
 export class WorkoutProgramApiService extends BaseService {
-    authHeader: AuthenticationHeader;
-
-    constructor(http: HttpClient, authService: AuthenticationService) {
-        super(http);
+    private getAuthHeader(): AuthenticationHeader {
         if (this.authIsActive) {
-            this.authHeader = new AuthenticationHeader(authService);
+           return new AuthenticationHeader(this.authService);
         }
+        return undefined;
+    }
+
+    constructor(http: HttpClient, private authService: AuthenticationService) {
+        super(http);
      }
 
     public editExerciseInWorkoutProgram(id: string, exercise: ExerciseModel): Observable<ExerciseModel> {
         let dto = this.createExerciseDtoFromModel(exercise);
-        return this.http.put<ExerciseModel>(this.baseUrl + '/api/workoutprogram/' + id + '/exercise/' + exercise._id, dto, this.authHeader);
+        return this.http.put<ExerciseModel>(this.baseUrl + '/api/workoutprogram/' + id + '/exercise/' + exercise._id, dto, this.getAuthHeader());
     }
 
     public postExerciseLog(programId: string): Observable<any> {
-        return this.http.post(this.baseUrl + '/api/workoutprogram/' + programId + '/logs', {}, this.authHeader);
+        return this.http.post(this.baseUrl + '/api/workoutprogram/' + programId + '/logs', {}, this.getAuthHeader());
     }
 
     public getExerciseLogs(programId: string): Observable<ExerciseLog[]> {
-        return this.http.get<ExerciseLog[]>(this.baseUrl + '/api/workoutprogram/' + programId + '/logs', this.authHeader);
+        return this.http.get<ExerciseLog[]>(this.baseUrl + '/api/workoutprogram/' + programId + '/logs', this.getAuthHeader());
     }
 
     public getWorkoutProgramList(): Observable<WorkoutProgramModel[]> {
-        return this.http.get<WorkoutProgramModel[]>(this.baseUrl + '/api/workoutprogram', this.authHeader);
+        return this.http.get<WorkoutProgramModel[]>(this.baseUrl + '/api/workoutprogram', this.getAuthHeader());
     }
 
     public getWorkoutProgram(id: string) {
-        return this.http.get<WorkoutProgramModel>(this.baseUrl + '/api/workoutprogram/' + id, this.authHeader);
+        return this.http.get<WorkoutProgramModel>(this.baseUrl + '/api/workoutprogram/' + id, this.getAuthHeader());
     }
 
     public deleteExerciseInWorkoutProgram(id: string, exercise: ExerciseModel): Observable<any> {
-        return this.http.delete(this.baseUrl + '/api/workoutprogram/' + id + '/exercise/' + exercise._id, this.authHeader);
+        return this.http.delete(this.baseUrl + '/api/workoutprogram/' + id + '/exercise/' + exercise._id, this.getAuthHeader());
     }
 
     public postExerciseToWorkoutProgram(id: string, exercise: ExerciseModel): Observable<any> {
-        return this.http.post(this.baseUrl + '/api/workoutprogram/' + id + '/exercise', exercise, this.authHeader)
+        return this.http.post(this.baseUrl + '/api/workoutprogram/' + id + '/exercise/', {}, this.getAuthHeader())
         .concatMap((link: any) => {
             const url = 'http://' + link.location;
             let dto = this.createExerciseDtoFromModel(exercise);
-            return this.http.put<ExerciseModel>(url, dto);
+            return this.http.put<ExerciseModel>(url, dto, this.getAuthHeader());
         });
     }
 
     public deleteWorkoutProgram(id: string) {
-        return this.http.delete(this.baseUrl + '/api/workoutprogram/' + id, this.authHeader);
+        return this.http.delete(this.baseUrl + '/api/workoutprogram/' + id, this.getAuthHeader());
     }
 
     public postWorkoutProgram(workoutprogrammodel: WorkoutProgramModel): Observable<any> {
         const work = workoutprogrammodel as WorkoutProgramModelDto;
-        return this.http.post(this.baseUrl + '/api/workoutprogram', workoutprogrammodel, this.authHeader)
+        return this.http.post(this.baseUrl + '/api/workoutprogram', {}, this.getAuthHeader())
         .concatMap((link: any) => {
             const url = 'http://' + link.location;
-            return this.http.put(url, work);
+            return this.http.put(url, work, this.getAuthHeader());
         });
     }
 
     public editWorkoutProgram(workoutprogrammodel: WorkoutProgramModel): Observable<any> {
         return this.http.patch(this.baseUrl + '/api/workoutprogram/' + workoutprogrammodel._id, 
-        {Name: workoutprogrammodel.Name}, this.authHeader);
+        {Name: workoutprogrammodel.Name}, this.getAuthHeader());
     }
 
     private putObjectAndId(id: string, work: WorkoutProgramModelDto): Observable<any> {
-        return this.http.put(this.baseUrl + '/api/workoutprogram/' + id, work, this.authHeader);
+        return this.http.put(this.baseUrl + '/api/workoutprogram/' + id, work, this.getAuthHeader());
     }
 
     private createExerciseDtoFromModel(exercise: ExerciseModel): ExerciseModelDto {

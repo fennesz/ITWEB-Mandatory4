@@ -4,7 +4,7 @@
 <p-dataTable [value]="programList | async" [contextMenu]="cm" selectionMode="single" [(selection)]="selectedWorkoutprogram" (onRowSelect)="navigateToWorkoutprogram()" [paginator]="true" rows="15" [responsive]="true">
   <p-header>Workout Program List</p-header>
   <p-column field="Name" header="Name" [sortable]="true"></p-column>
-  <p-footer><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-footer>
+  <p-footer *ngIf="authService.isLoggedIn()"><div class="ui-helper-clearfix" style="width:100%"><button type="button" pButton icon="fa-plus" style="float:left" (click)="showDialogToAdd()" label="Add"></button></div></p-footer>
 </p-dataTable>
 
 <p-dialog header="Add Workoutprogram" [(visible)]="displayDialogAdd" [responsive]="true" showEffect="fade" [modal]="true">
