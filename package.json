@@ -4,13 +4,12 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "startProd": "http-server",
-    "start": "ng serve",
+    "start": "npm run build && cd webapi && dotnet run && cd ..",
+    "build": "ng build",
+    "build:prod": "ng build --aot -prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "preinstall": "npm install -g http-server",
-    "postinstall": "ng build  --aot -prod && mv dist/* ."
+    "e2e": "ng e2e"
   },
   "private": true,
   "engines": {
