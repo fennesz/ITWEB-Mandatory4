@@ -25,9 +25,10 @@ data
 
 *.ini
 
-webapi/wwwroot/*
-webapi/obj/*
-webapi/bin/*
+webapi/wwwroot/
+webapi/obj/
+webapi/bin/
+webapi/.vs
 
 # Sublime editor
 # ==============
