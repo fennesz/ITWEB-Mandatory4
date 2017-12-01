@@ -9,7 +9,6 @@ using webapi.DAL.models;
 
 namespace webapi.Controllers
 {
-  [Produces("application/json")]
   [Route("api/WorkoutProgram")]
   public class WorkoutProgramController : Controller
   {
@@ -21,44 +20,81 @@ namespace webapi.Controllers
 
     // GET: api/WorkoutProgram
     [HttpGet]
-    public IEnumerable<WorkoutProgram> Get()
+    public ActionResult Get()
     {
-      return _repo.GetAll();
+      var data = _repo.GetAll().ToList();
+      foreach(var wp in data)
+      {
+        RemoveCircularReferencesFromWorkoutProgram(wp);
+      }
+      return Json(data);
     }
 
     // GET: api/WorkoutProgram/5
     [HttpGet("{id}", Name = "Get")]
-    public WorkoutProgram Get(string id)
+    public ActionResult Get(string id)
     {
-      return _repo.Get(id);
+      var data = _repo.Get(id);
+      RemoveCircularReferencesFromWorkoutProgram(data);
+      return Json(data);
     }
 
     // POST: api/WorkoutProgram
     [HttpPost]
-    public void Post([FromBody]WorkoutProgram value)
+    public ActionResult Post()
     {
-      _repo.Insert(value);
+      var id = _repo.Insert(new WorkoutProgram())._id;
+      var url = Url.Action("Get", "WorkoutProgram", new { id = id }, Request.Scheme);
+      return Json(new { location = url });
     }
 
     // PUT: api/WorkoutProgram/5
-    [HttpPut("{id}")]
-    public void Put(string id, [FromBody]WorkoutProgram value)
+    [HttpPatch("{id}")]
+    public ActionResult Patch(string id, [FromBody]WorkoutProgram value)
     {
       var obj = _repo.Get(id);
       obj.Name = value.Name != null ? value.Name : obj.Name;
       obj.Logs = value.Logs != null ? value.Logs : obj.Logs;
       obj.ExerciseList = value.ExerciseList != null ? value.ExerciseList : obj.ExerciseList;
       _repo.Update(obj);
+      RemoveCircularReferencesFromWorkoutProgram(obj);
+      return Json(obj);
     }
 
-    // DELETE: api/ApiWithActions/5
-    [HttpDelete("{id}")]
-    public void Delete(string id)
+    // PUT: api/WorkoutProgram/5
+    [HttpPut("{id}")]
+    public ActionResult Put(string id, [FromBody]WorkoutProgram value)
     {
       var obj = _repo.Get(id);
-      if(obj != null)
+      obj.Name = value.Name;
+      obj.Logs = value.Logs;
+      obj.ExerciseList = value.ExerciseList;
+      _repo.Update(obj);
+      RemoveCircularReferencesFromWorkoutProgram(obj);
+      return Json(new { id = id, @object = obj });
+    }
+
+    // DELETE: api/WorkoutProgram/5
+    [HttpDelete("{id}")]
+    public ActionResult Delete(string id)
+    {
+      var obj = _repo.Get(id);
+      if (obj != null)
       {
         _repo.Delete(obj);
+      }
+      return Json(new { });
+    }
+
+    private void RemoveCircularReferencesFromWorkoutProgram(WorkoutProgram wp)
+    {
+      foreach (var ex in wp.ExerciseList)
+      {
+        ex.WorkoutProgram = null;
+      }
+      foreach (var log in wp.Logs)
+      {
+        log.WorkoutProgram = null;
       }
     }
   }

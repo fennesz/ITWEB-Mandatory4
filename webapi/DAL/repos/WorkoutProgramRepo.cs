@@ -32,7 +32,7 @@ namespace webapi.DAL.repos
           .SingleOrDefault(e => e._id == id);
     }
 
-    public void Insert(WorkoutProgram entity)
+    public WorkoutProgram Insert(WorkoutProgram entity)
     {
       if (entity == null)
       {
@@ -40,15 +40,18 @@ namespace webapi.DAL.repos
       }
       var insertedEntity = entities.Add(entity);
       context.SaveChanges();
+      return insertedEntity.Entity;
     }
 
-    public void Update(WorkoutProgram entity)
+    public WorkoutProgram Update(WorkoutProgram entity)
     {
       if (entity == null)
       {
         throw new ArgumentNullException("entity");
       }
       context.SaveChanges();
+
+      return entity;
     }
 
     public void Delete(WorkoutProgram entity)
