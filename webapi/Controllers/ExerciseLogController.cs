@@ -9,8 +9,7 @@ using webapi.DAL.models;
 
 namespace webapi.Controllers
 {
-  [Produces("application/json")]
-  [Route("api/WorkoutProgram/{WPid}/ExerciseLog")]
+  [Route("api/WorkoutProgram/{WPid}/Logs")]
   public class ExerciseLogController : Controller
   {
     private WorkoutProgramRepo _repo;
@@ -22,25 +21,36 @@ namespace webapi.Controllers
 
     // Get: api/WorkoutProgram/id/ExerciseLog
     [HttpGet]
-    public IEnumerable<ExerciseLog> Get(string WPid)
+    public ActionResult Get(string WPid)
     {
       if (WPid == null) throw new ArgumentNullException(nameof(WPid));
-      return _repo.Get(WPid).Logs;
+      var data = _repo.Get(WPid).Logs;
+      foreach (var log in data)
+      {
+        RemoveCircularReferencesFromLog(log);
+      }
+      return Json(data);
     }
 
     // POST: api/WorkoutProgram/id/ExerciseLog
     [HttpPost("{id}")]
-    public void Post(string WPid)
+    public ActionResult Post(string WPid)
     {
       var wp = _repo.Get(WPid);
 
-      var exerciseLog = new ExerciseLog();
-      exerciseLog.TimeStamp = DateTime.Now;
-      exerciseLog.WorkoutProgramId = WPid;
-      
+      var exerciseLog = new ExerciseLog
+      {
+        TimeStamp = DateTime.Now
+      };
       wp.Logs.Add(exerciseLog);
       _repo.Update(wp);
+      RemoveCircularReferencesFromLog(exerciseLog);
+      return Json(new { id = exerciseLog._id, data = exerciseLog });
     }
 
+    private void RemoveCircularReferencesFromLog(ExerciseLog el)
+    {
+      el.WorkoutProgram = null;
+    }
   }
 }

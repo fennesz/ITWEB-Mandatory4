@@ -31,7 +31,7 @@ namespace webapi.Controllers
     }
 
     // GET: api/WorkoutProgram/5
-    [HttpGet("{id}", Name = "Get")]
+    [HttpGet("{id}")]
     public ActionResult Get(string id)
     {
       var data = _repo.Get(id);
@@ -86,6 +86,8 @@ namespace webapi.Controllers
       return Json(new { });
     }
 
+    // Dirty hacks to help json serialization, too lazy to actually make
+    // proper DTOs
     private void RemoveCircularReferencesFromWorkoutProgram(WorkoutProgram wp)
     {
       foreach (var ex in wp.ExerciseList)

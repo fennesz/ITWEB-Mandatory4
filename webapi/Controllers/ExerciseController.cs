@@ -9,7 +9,6 @@ using webapi.DAL.models;
 
 namespace webapi.Controllers
 {
-  [Produces("application/json")]
   [Route("api/WorkoutProgram/{WPid}/Exercise")]
   public class ExerciseController : Controller
   {
@@ -21,57 +20,90 @@ namespace webapi.Controllers
 
     // GET: api/workoutprogram/id/Exercise
     [HttpGet]
-    public IEnumerable<Exercise> Get(string WPid)
+    public ActionResult Get(string WPid)
     {
       if (WPid == null) throw new ArgumentNullException(nameof(WPid));
-      return _repo.Get(WPid).ExerciseList;
+      var data = _repo.Get(WPid).ExerciseList;
+      foreach (var ex in data)
+      {
+        RemoveCircularReferencesFromExercises(ex);
+      }
+      return Json(data);
     }
 
     // GET: api/WorkoutProgram/id/Exercise/id
-    [HttpGet("{id}", Name = "Get")]
-    public ICollection<Exercise> Get(string WPid, string id)
+    [HttpGet("{id}")]
+    public ActionResult Get(string WPid, string id)
     {
-      return _repo.Get(id).ExerciseList;
+      var data = _repo.Get(WPid).ExerciseList.First(x => x._id == id);
+      RemoveCircularReferencesFromExercises(data);
+      return Json(data);
     }
 
     // POST: api/WorkoutProgram/id/Exercise
     [HttpPost("{id}")]
-    public void Post(string WPid, [FromBody]Exercise value)
+    public ActionResult Post(string WPid)
     {
       var obj = _repo.Get(WPid);
-      var list = obj.ExerciseList;
-      list.Add(value);
-      _repo.Update(obj);
-
+      var guid = new Guid();
+      obj.ExerciseList.Add(new Exercise {ExerciseName = guid.ToString() });
+      obj = _repo.Update(obj);
+      var id = obj.ExerciseList.First(x => x.ExerciseName == guid.ToString())._id; // Nasty nasty hacks
+      var url = Url.Action("Get", "Exercise", new { WPid = WPid, id = id }, Request.Scheme);
+      return Json(new { location = url });
     }
 
-    // PUT: api/WorkoutProgram/id/Exercise/5
-    [HttpPut("{id}")]
-    public void Put(string WPid, string id, [FromBody]Exercise value)
+    // PATCH: api/WorkoutProgram/id/Exercise/5
+    [HttpPatch("{id}")]
+    public ActionResult Patch(string WPid, string id, [FromBody]Exercise value)
     {
       var obj = _repo.Get(WPid);
       var list = obj.ExerciseList;
       var exerciseToUpdate = obj.ExerciseList.First(x => x._id == id);
+      
+      exerciseToUpdate.Description = value.Description != null ? value.Description : exerciseToUpdate.Description;
+      exerciseToUpdate.ExerciseName = value.ExerciseName != null ? value.ExerciseName : exerciseToUpdate.ExerciseName;
+      exerciseToUpdate.RepsOrTime = value.RepsOrTime != null ? value.RepsOrTime : exerciseToUpdate.Description;
+      exerciseToUpdate.Sets = value.Sets != 0 ? value.Sets : exerciseToUpdate.Sets;
 
-      exerciseToUpdate._id = value._id;
+      _repo.Update(obj);
+      RemoveCircularReferencesFromExercises(exerciseToUpdate);
+      return Json(exerciseToUpdate);
+    }
+
+    // PUT: api/WorkoutProgram/id/Exercise/5
+    [HttpPut("{id}")]
+    public ActionResult Put(string WPid, string id, [FromBody]Exercise value)
+    {
+      var obj = _repo.Get(WPid);
+      var list = obj.ExerciseList;
+      var exerciseToUpdate = obj.ExerciseList.First(x => x._id == id);
+      
       exerciseToUpdate.Description = value.Description;
       exerciseToUpdate.ExerciseName = value.ExerciseName;
       exerciseToUpdate.RepsOrTime = value.RepsOrTime;
       exerciseToUpdate.Sets = value.Sets;
 
       _repo.Update(obj);
+      RemoveCircularReferencesFromExercises(exerciseToUpdate);
+      return Json(exerciseToUpdate);
     }
 
     // DELETE: api/WorkoutProgram/id/Exercise/5
     [HttpDelete("{id}")]
-    public void Delete(string WPid, string id)
+    public ActionResult Delete(string WPid, string id)
     {
       var obj = _repo.Get(WPid);
       var exerciseToRemove = obj.ExerciseList.First(x => x._id == id);
       obj.ExerciseList.Remove(exerciseToRemove);
 
       _repo.Update(obj);
+      return Json(new { });
+    }
 
+    private void RemoveCircularReferencesFromExercises(Exercise ex)
+    {
+      ex.WorkoutProgram = null;
     }
   }
 }
