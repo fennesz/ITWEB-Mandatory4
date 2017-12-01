@@ -18,7 +18,9 @@ namespace webapi.Controllers
     {
       _repo = repo;
     }
-    
+
+
+    // Get: api/WorkoutProgram/id/ExerciseLog
     [HttpGet]
     public IEnumerable<ExerciseLog> Get(string WPid)
     {
@@ -26,7 +28,7 @@ namespace webapi.Controllers
       return _repo.Get(WPid).Logs;
     }
 
-    // POST: api/WorkoutProgram/id/Exercise
+    // POST: api/WorkoutProgram/id/ExerciseLog
     [HttpPost("{id}")]
     public void Post(string WPid)
     {

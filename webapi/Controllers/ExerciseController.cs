@@ -62,7 +62,7 @@ namespace webapi.Controllers
       _repo.Update(obj);
     }
 
-    // DELETE: api/WorkoutProgram/id/5
+    // DELETE: api/WorkoutProgram/id/Exercise/5
     [HttpDelete("{id}")]
     public void Delete(string WPid, string id)
     {
