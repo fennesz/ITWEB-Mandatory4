@@ -1,14 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using webapi.DAL;
 
 namespace webapi
 {
@@ -27,6 +26,11 @@ namespace webapi
       services.AddMvc();
       services.AddDbContext<ApplicationContext>(options =>
           options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+      services.AddAuthentication(sharedOptions =>
+        {
+          sharedOptions.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddAzureAdB2CBearer(options => Configuration.Bind("AzureAdB2C", options));
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +41,7 @@ namespace webapi
         app.UseDeveloperExceptionPage();
       }
       app.UseDefaultFiles();
+      app.UseAuthentication();
       app.UseStaticFiles();
       app.UseMvc(routes =>
       {
