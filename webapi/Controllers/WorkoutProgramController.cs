@@ -52,6 +52,8 @@ namespace webapi.Controllers
     public ActionResult Patch(string id, [FromBody]WorkoutProgram value)
     {
       var obj = _repo.Get(id);
+      if (obj == null)
+        return Json(new{err="Cannot find workoutprogram."});
       obj.Name = value.Name != null ? value.Name : obj.Name;
       obj.Logs = value.Logs != null ? value.Logs : obj.Logs;
       obj.ExerciseList = value.ExerciseList != null ? value.ExerciseList : obj.ExerciseList;
