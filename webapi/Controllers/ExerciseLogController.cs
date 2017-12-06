@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webapi.DAL.repos;
 using webapi.DAL.models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace webapi.Controllers
 {
@@ -19,7 +16,7 @@ namespace webapi.Controllers
     }
 
 
-    // Get: api/WorkoutProgram/id/ExerciseLog
+    // Get: api/WorkoutProgram/{WPid}/log
     [HttpGet]
     public ActionResult Get(string WPid)
     {
@@ -32,8 +29,9 @@ namespace webapi.Controllers
       return Json(data);
     }
 
-    // POST: api/WorkoutProgram/id/ExerciseLog
-    [HttpPost("{id}")]
+    // POST: api/WorkoutProgram/{WPid}/log
+    [HttpPost]
+    [Authorize]
     public ActionResult Post(string WPid)
     {
       var wp = _repo.Get(WPid);

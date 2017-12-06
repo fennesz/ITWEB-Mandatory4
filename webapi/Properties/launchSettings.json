@@ -12,6 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "Secret": "DirtySecretForTheDirtyMasses",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

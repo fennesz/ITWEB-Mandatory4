@@ -61,7 +61,7 @@ export class WorkoutProgramApiService extends BaseService {
     public postExerciseToWorkoutProgram(id: string, exercise: ExerciseModel): Observable<any> {
         return this.http.post(this.baseUrl + '/api/workoutprogram/' + id + '/exercise/', {}, this.getAuthHeader())
         .concatMap((link: any) => {
-            const url = 'https://' + link.location;
+            const url = link.location;
             let dto = this.createExerciseDtoFromModel(exercise);
             return this.http.put<ExerciseModel>(url, dto, this.getAuthHeader());
         });
@@ -75,7 +75,7 @@ export class WorkoutProgramApiService extends BaseService {
         const work = workoutprogrammodel as WorkoutProgramModelDto;
         return this.http.post(this.baseUrl + '/api/workoutprogram', {}, this.getAuthHeader())
         .concatMap((link: any) => {
-            const url = 'https://' + link.location;
+            const url = link.location;
             return this.http.put(url, work, this.getAuthHeader());
         });
     }

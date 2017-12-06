@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webapi.DAL.repos;
 using webapi.DAL.models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace webapi.Controllers
 {
@@ -18,7 +16,7 @@ namespace webapi.Controllers
       _repo = repo;
     }
 
-    // GET: api/workoutprogram/id/Exercise
+    // GET: api/workoutprogram/{WPid}/Exercise
     [HttpGet]
     public ActionResult Get(string WPid)
     {
@@ -31,7 +29,7 @@ namespace webapi.Controllers
       return Json(data);
     }
 
-    // GET: api/WorkoutProgram/id/Exercise/id
+    // GET: api/WorkoutProgram/{WPid}/Exercise/{id}
     [HttpGet("{id}")]
     public ActionResult Get(string WPid, string id)
     {
@@ -40,8 +38,9 @@ namespace webapi.Controllers
       return Json(data);
     }
 
-    // POST: api/WorkoutProgram/id/Exercise
-    [HttpPost("{id}")]
+    // POST: api/WorkoutProgram/{WPid}/Exercise
+    [HttpPost]
+    [Authorize]
     public ActionResult Post(string WPid)
     {
       var obj = _repo.Get(WPid);
@@ -53,28 +52,14 @@ namespace webapi.Controllers
       return Json(new { location = url });
     }
 
-    // PATCH: api/WorkoutProgram/id/Exercise/5
-    [HttpPatch("{id}")]
-    public ActionResult Patch(string WPid, string id, [FromBody]Exercise value)
-    {
-      var obj = _repo.Get(WPid);
-      var list = obj.ExerciseList;
-      var exerciseToUpdate = obj.ExerciseList.First(x => x._id == id);
-      
-      exerciseToUpdate.Description = value.Description != null ? value.Description : exerciseToUpdate.Description;
-      exerciseToUpdate.ExerciseName = value.ExerciseName != null ? value.ExerciseName : exerciseToUpdate.ExerciseName;
-      exerciseToUpdate.RepsOrTime = value.RepsOrTime != null ? value.RepsOrTime : exerciseToUpdate.Description;
-      exerciseToUpdate.Sets = value.Sets != 0 ? value.Sets : exerciseToUpdate.Sets;
-
-      _repo.Update(obj);
-      RemoveCircularReferencesFromExercises(exerciseToUpdate);
-      return Json(exerciseToUpdate);
-    }
-
-    // PUT: api/WorkoutProgram/id/Exercise/5
+    // PUT: api/WorkoutProgram/{WPid}/Exercise/{id}
     [HttpPut("{id}")]
+    [Authorize]
     public ActionResult Put(string WPid, string id, [FromBody]Exercise value)
     {
+      if(value == null) {
+        return Json(new {err = "wrong data sent" });
+      }
       var obj = _repo.Get(WPid);
       var list = obj.ExerciseList;
       var exerciseToUpdate = obj.ExerciseList.First(x => x._id == id);
@@ -89,8 +74,9 @@ namespace webapi.Controllers
       return Json(exerciseToUpdate);
     }
 
-    // DELETE: api/WorkoutProgram/id/Exercise/5
+    // DELETE: api/WorkoutProgram/{WPid}/Exercise/{id}
     [HttpDelete("{id}")]
+    [Authorize]
     public ActionResult Delete(string WPid, string id)
     {
       var obj = _repo.Get(WPid);

@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export abstract class BaseService {
     protected baseUrl: String;
     protected workoutProgramTokenKey = 'workoutProgramApp';
-    protected authIsActive = false;
+    protected authIsActive = true;
 
     constructor(protected http: HttpClient) {
         this.baseUrl = window.location.origin;

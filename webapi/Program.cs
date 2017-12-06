@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using webapi.DAL;
 using webapi.DAL.repos;
@@ -17,6 +12,10 @@ namespace webapi
   {
     public static void Main(string[] args)
     {
+      // If people forget to set a Secret environment variable
+      var secret = Environment.GetEnvironmentVariable("Secret");
+      if (secret == null) throw new Exception("The application requires a ''Secret'' environment variable");
+
       var host = BuildWebHost(args);
 
       using (var scope = host.Services.CreateScope())

@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webapi.DAL.repos;
 using webapi.DAL.models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace webapi.Controllers
 {
@@ -23,7 +20,7 @@ namespace webapi.Controllers
     public ActionResult Get()
     {
       var data = _repo.GetAll().ToList();
-      foreach(var wp in data)
+      foreach (var wp in data)
       {
         RemoveCircularReferencesFromWorkoutProgram(wp);
       }
@@ -41,6 +38,7 @@ namespace webapi.Controllers
 
     // POST: api/WorkoutProgram
     [HttpPost]
+    [Authorize]
     public ActionResult Post()
     {
       var id = _repo.Insert(new WorkoutProgram())._id;
@@ -50,6 +48,7 @@ namespace webapi.Controllers
 
     // PUT: api/WorkoutProgram/5
     [HttpPatch("{id}")]
+    [Authorize]
     public ActionResult Patch(string id, [FromBody]WorkoutProgram value)
     {
       var obj = _repo.Get(id);
@@ -63,6 +62,7 @@ namespace webapi.Controllers
 
     // PUT: api/WorkoutProgram/5
     [HttpPut("{id}")]
+    [Authorize]
     public ActionResult Put(string id, [FromBody]WorkoutProgram value)
     {
       var obj = _repo.Get(id);
@@ -76,6 +76,7 @@ namespace webapi.Controllers
 
     // DELETE: api/WorkoutProgram/5
     [HttpDelete("{id}")]
+    [Authorize]
     public ActionResult Delete(string id)
     {
       var obj = _repo.Get(id);
@@ -90,13 +91,19 @@ namespace webapi.Controllers
     // proper DTOs
     private void RemoveCircularReferencesFromWorkoutProgram(WorkoutProgram wp)
     {
-      foreach (var ex in wp.ExerciseList)
+      if (wp.ExerciseList != null)
       {
-        ex.WorkoutProgram = null;
+        foreach (var ex in wp.ExerciseList)
+        {
+          ex.WorkoutProgram = null;
+        }
       }
-      foreach (var log in wp.Logs)
+      if (wp.Logs != null)
       {
-        log.WorkoutProgram = null;
+        foreach (var log in wp.Logs)
+        {
+          log.WorkoutProgram = null;
+        }
       }
     }
   }
